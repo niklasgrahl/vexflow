@@ -1,4 +1,4 @@
-build/
+build/tests/
 *.lock
 ruby_sess.*
 .*.swp
