@@ -26,8 +26,8 @@
  *
  * This library makes use of Simon Tatham's awesome font - Gonville.
  *
- * Build ID: 0xFE@847d976d936b462071f2849ee584caced1983ef9
- * Build date: 2014-11-16 18:02:42 +0100
+ * Build ID: 0xFE@47bb2e5d408259fc3d96d3076fd97dadcdcd9a67
+ * Build date: 2014-11-25 15:09:13 +0100
  */
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -3271,7 +3271,6 @@ Vex.Flow.NoteHead = (function() {
   // * `stem_direction`: the direction of the stem
   function drawSlashNoteHead(ctx, duration, x, y, stem_direction) {
     var width = 15 + (Vex.Flow.STEM_WIDTH / 2);
-    ctx.save();
     ctx.setLineWidth(Vex.Flow.STEM_WIDTH);
 
     var fill = false;
@@ -3305,8 +3304,6 @@ Vex.Flow.NoteHead = (function() {
           ctx.stroke();
       }
     }
-
-    ctx.restore();
   }
 
   // ## Prototype Methods
@@ -3477,8 +3474,16 @@ Vex.Flow.NoteHead = (function() {
       }
 
       if (this.note_type == "s") {
-        drawSlashNoteHead(ctx, this.duration,
-          head_x, y, stem_direction);
+        if (this.style) {
+          ctx.save();
+          this.applyStyle(ctx);
+          drawSlashNoteHead(ctx, this.duration,
+            head_x, y, stem_direction);
+          ctx.restore();
+        } else {
+          drawSlashNoteHead(ctx, this.duration,
+            head_x, y, stem_direction);
+        }
       } else {
         if (this.style) {
           ctx.save();

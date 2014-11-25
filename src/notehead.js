@@ -25,7 +25,6 @@ Vex.Flow.NoteHead = (function() {
   // * `stem_direction`: the direction of the stem
   function drawSlashNoteHead(ctx, duration, x, y, stem_direction) {
     var width = 15 + (Vex.Flow.STEM_WIDTH / 2);
-    ctx.save();
     ctx.setLineWidth(Vex.Flow.STEM_WIDTH);
 
     var fill = false;
@@ -59,8 +58,6 @@ Vex.Flow.NoteHead = (function() {
           ctx.stroke();
       }
     }
-
-    ctx.restore();
   }
 
   // ## Prototype Methods
@@ -231,8 +228,16 @@ Vex.Flow.NoteHead = (function() {
       }
 
       if (this.note_type == "s") {
-        drawSlashNoteHead(ctx, this.duration,
-          head_x, y, stem_direction);
+        if (this.style) {
+          ctx.save();
+          this.applyStyle(ctx);
+          drawSlashNoteHead(ctx, this.duration,
+            head_x, y, stem_direction);
+          ctx.restore();
+        } else {
+          drawSlashNoteHead(ctx, this.duration,
+            head_x, y, stem_direction);
+        }
       } else {
         if (this.style) {
           ctx.save();
